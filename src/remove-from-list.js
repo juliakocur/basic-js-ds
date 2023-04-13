@@ -27,6 +27,9 @@ function removeKFromList(/* l, k */) {
   // remove line with error and write your code here
 }
 
+//let sorted = l.filter((el) => el != k);
+//return sorted
+
 module.exports = {
   removeKFromList
 };
