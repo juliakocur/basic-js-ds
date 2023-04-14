@@ -36,27 +36,27 @@ class Node {
  }   
 class BinarySearchTree {
    constructor() {
-   this.root = null;
+   this.rootNum = null;
    }
   
    root() {
-   return this.root
+   return this.rootNum
    }
 
    add(data) {//1.
    if(this.data === data) return;//если пришел повторяющийся элемент то ничего не делать
-   if (this.root) { 
-    return this.root.add(data);
+   if (this.rootNum) { 
+    return this.rootNum.add(data);
   } 
-   this.root = new Node(data);
+   this.rootNum = new Node(data);
   }
   
   find(data) {
-  let current = this.root;// если в root нет элемента то он говорит undefind и дальше идет в while
+  let current = this.rootNum;// если в root нет элемента то он говорит undefind и дальше идет в while
   
   while(true) {
-  if(current === undefined) 
-  return console.log('no element'); // если не найдено то будет undefind 
+  if(current === null||current === undefined) 
+  return null; console.log('no element'); // если не найдено то будет undefind 
   if(current.data === data) { //если нашли то возвращаем узел
   console.log('found')
   return current;
@@ -68,12 +68,12 @@ class BinarySearchTree {
   } 
   }
   }
-  
+
   has(data) {
-    let current = this.root;// если в root нет элемента то он говорит undefind и дальше идет в while
+    let current = this.rootNum;// если в root нет элемента то он говорит undefind и дальше идет в while
   
   while(true) {
-  if(current === undefined) {
+  if(current === null||current === undefined||data === null||data === undefined) {
   return false; 
   console.log('no element');
   } // если не найдено то будет undefind 
@@ -88,6 +88,53 @@ class BinarySearchTree {
   } 
   }
   }
+
+  minNode(node) {
+    // если слева от узла ноль тогда это должен быть минимальный узел
+  if (node.left === null)
+  return node;
+  else
+  return this.minNode(node.left);
+  }
+
+  remove(data) {
+  this.rootNum = this.removeNode(this.rootNum, data); // helper method below
+  }
+  removeNode(node, data) {
+  if (node === null) {
+  return null;
+    // если данные, которые нужно удалить, меньше, чем данные корня, переходим к левому поддереву
+  } else if (data < node.data) {
+  node.left = this.removeNode(node.left, data);
+  return node;
+    // если данные, которые нужно удалить, больше, чем данные корня, переходим к правому поддереву
+  } else if (data > node.data) {
+  node.right = this.removeNode(node.right, data);
+  return node;
+    // если данные такие как данные корня, удаляем узел
+  } else {
+        // удаляем узел без потомков (листовой узел (leaf) или крайний)
+  if (node.left === null && node.right === null) {
+  node = null;
+  return node;
+  }
+        // удаляем узел с одним потомком
+  if (node.left === null) {
+  node = node.right;
+  return node;
+  } else if(node.right === null) {
+  node = node.left;
+  return node;
+  }
+        // удаляем узел с двумя потомками
+        // minNode правого поддерева хранится в новом узле
+  let newNode = this.minNode(node.right);
+  node.data = newNode.data;
+  node.right = this.removeNode(node.right, newNode.data);
+  return node;
+  }
+}
+
 }
 
 //class BinarySearchTree {
